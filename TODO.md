@@ -1,10 +1,31 @@
-# Vercel Deployment Fix TODO
+# TeamNote Vercel 404 Fix - Hybrid Static + Serverless Plan
 
-## Steps:
-- [x] Tried rename - permission denied (close VSCode tabs)
-- [x] Edit frontend/TeamNote mockup/vite.config.ts: set build.outDir = 'build'
-- [x] Edit vercel.json: distDir="build", dest="frontend/TeamNote mockup/build/$1" (outputDirectory pending)
+## Steps (approved by user):
 
-- [ ] git add . && git commit -m "fix: vercel deploy - use 'build' output dir" && git push origin main
-- [ ] Check Vercel dashboard
-- [x] Create TODO.md
+1. ✅ **Plan confirmed** - Hybrid deploy: static frontend + serverless backend APIs.
+
+2. ✅ Updated `vercel.json` for hybrid builds/routes (SPA fallback to index.html).
+
+3. ✅ Created serverless API handlers:
+   - `backend/api/auth/index.js`
+   - `backend/api/tasks/index.js`
+   - `backend/api/users/index.js`
+   - `backend/api/health.js`
+
+4. **[PENDING]** Improve handlers for Vercel (fix Express app execution, DB per-request):
+   - Update handler code to properly handle req/res without full Express stack.
+
+5. **[PENDING]** Test locally: `npx vercel dev` (Vercel CLI v50.42.0 installed).
+
+6. **[PENDING]** Deploy: `npx vercel --prod`, set env vars in dashboard.
+
+7. **[PENDING]** Verify endpoints.
+
+**Current status: Core files ready. Run `npx vercel dev` to test local deploy.**
+
+## Quick Test Commands:
+```
+npx vercel dev
+# Then visit http://localhost:3000/health, /api/health, build frontend
+```
+
