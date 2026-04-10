@@ -13,11 +13,10 @@ export interface Account {
 }
 
 interface LoginScreenProps {
-  onLogin: (account: Account) => void;
   onSwitch?: () => void;
 }
 
-export function LoginScreen({ onLogin, onSwitch }: LoginScreenProps) {
+export function LoginScreen({ onSwitch }: LoginScreenProps) {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Account | null>(null);
@@ -69,7 +68,7 @@ export function LoginScreen({ onLogin, onSwitch }: LoginScreenProps) {
   const handleLoginSuccess = (account: Account) => {
     setShowLoginModal(false);
     setSelectedAccount(null);
-    onLogin(account);
+    // onLogin removed, context handles state
   };
 
   return (

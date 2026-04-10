@@ -1,40 +1,56 @@
 import { useState } from 'react';
 import { UserCircle2, Mail, Lock, Users, ArrowLeft } from 'lucide-react';
-import type { Account } from './LoginScreen';
+import { useAuth } from '../contexts/AuthContext';
 
 export interface SignUpScreenProps {
-  onSignup: (account: Account) => void;
   onSwitch: () => void;
 }
 
-export function SignUpScreen({ onSignup, onSwitch }: SignUpScreenProps) {
+export function SignUpScreen({ onSwitch }: SignUpScreenProps) {
+  const { register } = useAuth() as any;
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState<'leader' | 'member'>('member');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
-    if (name.trim()) {
-      const words = name.trim().split(' ').filter(Boolean);
-      const initials = words.map(w => w[0].toUpperCase()).join('');
-      const newAccount: Account = {
-        id: Date.now().toString(),
-        name: name.trim(),
-        role,
-        avatar: initials,
-        password: btoa(password), // Mock hash - plain text btoa for demo
-      };
-      // Persist to localStorage
-      const accounts = JSON.parse(localStorage.getItem('teamnote_accounts') || '[]') as Account[];
-      accounts.push(newAccount);
-      localStorage.setItem('teamnote_accounts', JSON.stringify(accounts));
-      onSignup(newAccount);
+    if (name.trim() && email.trim()) {
+      try {
+        // Call register function from auth context with individual parameters
+        await register(name.trim(), email.trim(), password, role);
+        
+        // Also save to teamnote_accounts for display in LoginScreen
+        const words = name.trim().split(' ').filter(Boolean);
+        const initials = words.map(w => w[0].toUpperCase()).join('');
+        const newAccount = {
+          id: Date.now().toString(),
+          name: name.trim(),
+          email: email.trim(),
+          role,
+          avatar: initials,
+          password: btoa(password), // Mock hash - plain text btoa for demo
+        };
+        
+        const accounts = JSON.parse(localStorage.getItem('teamnote_accounts') || '[]');
+        accounts.push(newAccount);
+        localStorage.setItem('teamnote_accounts', JSON.stringify(accounts));
+        
+        // Clear form after successful signup
+        setName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        // Switch to login screen after successful signup
+        onSwitch();
+      } catch (error) {
+        alert('Failed to create account. Please try again.');
+      }
     }
   };
 
