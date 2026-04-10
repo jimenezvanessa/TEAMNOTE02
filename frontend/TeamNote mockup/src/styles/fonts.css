@@ -1,0 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* Comic Sans alternative for UI */
+.comic-sans { 
+  font-family: "Comic Neue", "Comic Sans MS", cursive, sans-serif !important; 
+}
