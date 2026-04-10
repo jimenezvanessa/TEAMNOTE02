@@ -1,13 +1,10 @@
-# TeamNote Vercel Deployment TODO
+# Vercel Deployment Fix TODO
 
-## Current Progress:
-- [x] Plan approved: Deploy frontend to Vercel first
+## Steps:
+- [x] Tried rename - permission denied (close VSCode tabs)
+- [x] Edit frontend/TeamNote mockup/vite.config.ts: set build.outDir = 'build'
+- [x] Edit vercel.json: distDir="build", dest="frontend/TeamNote mockup/build/$1" (outputDirectory pending)
 
-## Steps to Complete:
-2. [x] cd frontend/TeamNote mockup && vercel login (success)\n3. [ ] cd frontend/TeamNote mockup && vercel deploy --prod (gets live URL)
-4. [ ] Test deployed frontend (static UI works, APIs 404 until backend)
-5. [ ] Backend deploy (Railway/Render): Push to Git, link repo, set MongoDB URI
-6. [ ] Update frontend api.ts baseURL to backend URL if separate domains (CORS)
-7. [ ] Redeploy frontend if API updated
-
-**Notes:** Frontend ready for static deploy. Backend needs WS-compatible host. CLI install running/success.
+- [ ] git add . && git commit -m "fix: vercel deploy - use 'build' output dir" && git push origin main
+- [ ] Check Vercel dashboard
+- [x] Create TODO.md

@@ -4,14 +4,14 @@
       "src": "frontend/TeamNote mockup/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist"
+"distDir":"build"
       }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "frontend/TeamNote mockup/dist/$1"
+"dest":"frontend/TeamNote mockup/build/$1"
     }
   ]
 }
