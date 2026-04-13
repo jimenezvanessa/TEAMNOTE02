@@ -1,13 +1,8 @@
 {
   "version": 2,
+  "buildCommand": "cd 'frontend/TeamNote mockup' && npm run build",
+  "installCommand": "npm install && cd 'frontend/TeamNote mockup' && npm install",
   "builds": [
-    {
-      "src": "frontend/TeamNote mockup/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
-    },
     {
       "src": "api/**/*.js",
       "use": "@vercel/node"
