@@ -15,25 +15,8 @@
   ],
   "routes": [
     {
-      "src": "/api/auth/(.*)",
-      "dest": "/backend/api/auth.js"
-    },
-    {
-      "src": "/api/tasks/(.*)",
-      "dest": "/backend/api/tasks.js"
-    },
-    {
-      "src": "/api/users/(.*)",
-      "dest": "/backend/api/users.js"
-    },
-    {
-      "src": "/api/health",
-      "dest": "/backend/api/health.js"
-    },
-    {
       "src": "/api/(.*)",
-      "status": 404,
-      "continue": true
+      "dest": "/backend/api/index.js"
     },
     {
       "src": "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(js|css|png|jpg|ico|svg)).*)",
