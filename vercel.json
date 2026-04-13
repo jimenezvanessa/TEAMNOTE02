@@ -6,6 +6,10 @@
     {
       "src": "api/**/*.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "frontend/TeamNote mockup/build",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -26,6 +30,10 @@
       "dest": "/api/users.js"
     },
     {
+      "src": "/api/users",
+      "dest": "/api/users.js"
+    },
+    {
       "src": "/api/health",
       "dest": "/api/health.js"
     },
@@ -35,12 +43,16 @@
       "status": 404
     },
     {
-      "src": "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(js|css|png|jpg|ico|svg|woff|woff2)).*)",
-      "dest": "/frontend/TeamNote mockup/build/index.html"
+      "src": "/assets/(.*)",
+      "dest": "/frontend/TeamNote mockup/build/assets/$1"
     },
     {
       "src": "/favicon.ico",
       "dest": "/frontend/TeamNote mockup/build/favicon.ico"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/TeamNote mockup/build/index.html"
     }
   ],
   "env": {
