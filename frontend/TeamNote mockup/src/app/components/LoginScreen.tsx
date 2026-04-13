@@ -4,13 +4,9 @@ import AccountCard from './AccountCard';
 import PasswordModal from './PasswordModal';
 import LoginModal from './LoginModal';
 
-export interface Account {
-  id: string;
-  name: string;
-  role: 'leader' | 'member';
-  avatar: string;
-  password: string; // Mock - in production, store hash
-}
+import type { User } from '../components/TaskBoard/types';
+
+export type Account = User & { avatar: string; password?: string };
 
 interface LoginScreenProps {
   onSwitch?: () => void;
@@ -23,19 +19,18 @@ export function LoginScreen({ onSwitch }: LoginScreenProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  useEffect(() => {
-    const saved = localStorage.getItem('teamnote_accounts');
-    if (saved) {
-      setAccounts(JSON.parse(saved));
-    }
-  }, []);
-
   const refreshAccounts = () => {
-    const saved = localStorage.getItem('teamnote_accounts');
-    if (saved) {
-      setAccounts(JSON.parse(saved));
+    const raw = localStorage.getItem('teamnote_accounts');
+    try {
+      setAccounts(raw ? JSON.parse(raw) : []);
+    } catch {
+      setAccounts([]);
     }
   };
+
+  useEffect(() => {
+    refreshAccounts();
+  }, []);
 
   const leaders = accounts.filter(a => a.role === 'leader');
   const members = accounts.filter(a => a.role === 'member');
@@ -47,10 +42,9 @@ export function LoginScreen({ onSwitch }: LoginScreenProps) {
 
   const handleConfirmDelete = (password: string) => {
     if (!deleteTarget) return;
-    const storedPw = (() => { try { return atob(deleteTarget.password); } catch { return ''; } })();
-    // Mock validation: accept either stored pw or admin123
-    if (!password || (password !== 'admin123' && password !== storedPw)) {
-      alert('Incorrect password');
+    // Simplified mock validation - use 'admin123'
+    if (password !== 'admin123') {
+      alert('Incorrect password. Try "admin123"');
       return;
     }
     const newAccounts = accounts.filter(a => a.id !== deleteTarget.id);
@@ -68,7 +62,7 @@ export function LoginScreen({ onSwitch }: LoginScreenProps) {
   const handleLoginSuccess = (account: Account) => {
     setShowLoginModal(false);
     setSelectedAccount(null);
-    // onLogin removed, context handles state
+    // context handles state
   };
 
   return (

@@ -9,3 +9,10 @@ export interface Task {
   status: Status;
   ownerId: string; // id of the account that owns this task
 }
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: 'leader' | 'member';
+}

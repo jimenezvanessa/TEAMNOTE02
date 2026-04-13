@@ -25,22 +25,6 @@ export function SignUpScreen({ onSwitch }: SignUpScreenProps) {
         // Call register function from auth context with individual parameters
         await register(name.trim(), email.trim(), password, role);
         
-        // Also save to teamnote_accounts for display in LoginScreen
-        const words = name.trim().split(' ').filter(Boolean);
-        const initials = words.map(w => w[0].toUpperCase()).join('');
-        const newAccount = {
-          id: Date.now().toString(),
-          name: name.trim(),
-          email: email.trim(),
-          role,
-          avatar: initials,
-          password: btoa(password), // Mock hash - plain text btoa for demo
-        };
-        
-        const accounts = JSON.parse(localStorage.getItem('teamnote_accounts') || '[]');
-        accounts.push(newAccount);
-        localStorage.setItem('teamnote_accounts', JSON.stringify(accounts));
-        
         // Clear form after successful signup
         setName('');
         setEmail('');
