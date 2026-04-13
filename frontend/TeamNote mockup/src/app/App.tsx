@@ -4,10 +4,6 @@ import { LoginScreen, type Account } from './components/LoginScreen';
 import { SignUpScreen } from './components/SignUpScreen';
 import Board from './components/TaskBoard/Board';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import React from 'react';
-
-
-
 export const AppContent = ({ screen, setScreen }: { screen: 'login' | 'signup', setScreen: React.Dispatch<React.SetStateAction<'login' | 'signup'>> }) => {
   const { user, logout, loading } = useAuth() as any;
 

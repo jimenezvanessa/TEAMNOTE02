@@ -1,85 +1,47 @@
-# ✅ Vercel Migration Complete
+# TeamNote Error Fixes - Implementation TODO
 
-## 🎉 Project Successfully Converted to Serverless Architecture
+## Current Status
+✅ Plan approved  
+✅ Step 1.1: api/auth.ts created
 
-### ✅ Completed Steps
+## Steps (Complete sequentially)
 
-1. ✅ Created `/api` directory with Vercel Serverless Functions
-   - `api/auth.js` - Authentication endpoints
-   - `api/tasks.js` - Task management endpoints  
-   - `api/users.js` - Users list endpoint
-   - `api/health.js` - Health check endpoint
+### 1. Fix TS Errors - Convert /api/*.js to .ts (Priority 1)
+- ✅ Read & convert `api/auth.js` → `api/auth.ts`
+- ✅ Read & convert `api/tasks.js` → `api/tasks.ts`  
+- ✅ Read & convert `api/users.js` → `api/users.ts`
+- ✅ Read & convert `api/health.js` → `api/health.ts`
+- ✅ tsconfig.json updated with allowJs + types: node
 
-2. ✅ Created `/lib` directory with shared utilities
-   - `lib/db.js` - Optimized MongoDB connection pooling
-   - `lib/models/User.js` - User schema
-   - `lib/models/Task.js` - Task schema
+### 2. Fix Vite Proxy for Local Dev
+- ✅ Commented out /api proxy in vite.config.ts (use Vercel dev)
 
-3. ✅ Updated configuration files
-   - `vercel.json` - Proper serverless routing
-   - `package.json` - Root-level dependencies
-   - `.env.example` - Environment template
+### 3. Frontend Minor Fixes
+- ✅ Removed duplicate React import in App.tsx
 
-4. ✅ Frontend already configured
-   - Uses `/api` base URL (no changes needed)
-   - Ready for production deployment
+### 4. Backend Local Dev (Optional)
+- [ ] Skip/Remove backend/ if Vercel-only (recommended)
 
-### 📋 Next Steps Before Deployment
+### 5. Testing
+- [ ] `vercel dev`
+- [ ] Frontend build test
 
-1. Install dependencies:
-   ```bash
-   npm install
-   cd frontend/TeamNote\ mockup && npm install
-   ```
+**TS Errors Fixed! Ready for testing.**
 
-2. Build frontend:
-   ```bash
-   npm run build
-   ```
+### 4. Backend Local Dev (Optional - if keeping)
+- [ ] Fix `backend/server.js` require paths to `backend/routes/*`
+- [ ] Create missing `backend/middleware/auth.js` copy from root logic
 
-3. Set environment variables on Vercel:
-   - `MONGODB_URI` - MongoDB Atlas connection string
-   - `JWT_SECRET` - JWT signing key
+### 5. Testing & Validation
+- [ ] `npm install`
+- [ ] `cd frontend/TeamNote mockup && npm install`
+- [ ] `vercel dev` - Test full stack
+- [ ] `npx tsc --noEmit`
+- [ ] Frontend: `cd frontend/TeamNote mockup && npm run build`
 
-4. Deploy:
-   ```bash
-   git add .
-   git commit -m "Convert backend to Vercel Serverless Functions"
-   git push origin main
-   ```
+### 6. Cleanup & Deploy
+- [ ] Optional: rm -rf backend/ (per TODO.md)
+- [ ] `vercel --prod`
 
-5. Test endpoints (see VERCEL_DEPLOYMENT.md for examples)
-
-### 🗑️ Optional Cleanup (Keep for Reference or Delete)
-
-These files are no longer needed for Vercel deployment:
-
-```
-backend/
-├── server.js              ← Not used (replaced by /api)
-├── sockets/               ← Not needed (Socket.io incompatible)
-├── api/                   ← Replaced by root /api
-├── routes/                ← Replaced by /api handlers
-├── middleware/            ← Moved to /api handlers
-└── utils/db.js            ← Replaced by /lib/db.js
-```
-
-**You can keep these for local development reference**, or remove them if file storage is limited.
-
-### 📖 Full Guide
-
-See `VERCEL_DEPLOYMENT.md` for comprehensive deployment instructions.
-
-### 🚨 Important Notes
-
-- Socket.io is **not supported** on Vercel (no persistent connections)
-- Each API call manages its own DB connection (pooled automatically)
-- Free tier: 10-second function timeout
-- Cold starts ~1-2s after inactivity
-- All endpoints have CORS enabled
-
----
-
-**Ready to ship!** 🚀
-
+**Next: Convert api/tasks.js → api/tasks.ts**
 
