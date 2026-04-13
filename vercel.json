@@ -6,15 +6,15 @@
     {
       "src": "api/**/*.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "frontend/TeamNote mockup/build",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/auth/(.*)",
+      "dest": "/api/auth.js"
+    },
+    {
+      "src": "/api/auth",
       "dest": "/api/auth.js"
     },
     {
@@ -38,22 +38,33 @@
       "dest": "/api/health.js"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1.js",
-      "status": 404
+      "src": "/static/(.+)",
+      "dest": "/frontend/TeamNote mockup/build/static/$1"
     },
     {
-      "src": "/assets/(.*)",
+      "src": "/assets/(.+)",
       "dest": "/frontend/TeamNote mockup/build/assets/$1"
     },
     {
       "src": "/favicon.ico",
-      "dest": "/frontend/TeamNote mockup/build/favicon.ico"
+      "dest": "/frontend/TeamNote mockup/build/favicon.ico",
+      "headers": {
+        "Cache-Control": "public, max-age=3600"
+      }
     },
     {
-      "src": "/(.*)",
+      "src": "/index.html",
+      "dest": "/frontend/TeamNote mockup/build/index.html"
+    },
+    {
+      "src": "^/(?!api)(.*)$",
+      "dest": "/frontend/TeamNote mockup/build/$1"
+    },
+    {
+      "src": "/",
       "dest": "/frontend/TeamNote mockup/build/index.html"
     }
   ]
 }
+
 
