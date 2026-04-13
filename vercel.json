@@ -1,13 +1,22 @@
 {
   "version": 2,
-  "buildCommand": "cd 'frontend/TeamNote mockup' && npm run build",
+  "buildCommand": "cd 'frontend/TeamNote mockup' && npm run build && cd ../.. && (rm -rf public || true) && cp -r 'frontend/TeamNote mockup/build' public",
   "installCommand": "npm install && cd 'frontend/TeamNote mockup' && npm install",
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
+  "public": "public",
+  "functions": {
+    "api/auth.js": {
+      "runtime": "@vercel/node"
+    },
+    "api/tasks.js": {
+      "runtime": "@vercel/node"
+    },
+    "api/users.js": {
+      "runtime": "@vercel/node"
+    },
+    "api/health.js": {
+      "runtime": "@vercel/node"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/api/auth/(.*)",
@@ -36,35 +45,13 @@
     {
       "src": "/api/health",
       "dest": "/api/health.js"
-    },
-    {
-      "src": "/static/(.+)",
-      "dest": "/frontend/TeamNote mockup/build/static/$1"
-    },
-    {
-      "src": "/assets/(.+)",
-      "dest": "/frontend/TeamNote mockup/build/assets/$1"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/frontend/TeamNote mockup/build/favicon.ico",
-      "headers": {
-        "Cache-Control": "public, max-age=3600"
-      }
-    },
-    {
-      "src": "/index.html",
-      "dest": "/frontend/TeamNote mockup/build/index.html"
-    },
-    {
-      "src": "^/(?!api)(.*)$",
-      "dest": "/frontend/TeamNote mockup/build/$1"
-    },
-    {
-      "src": "/",
-      "dest": "/frontend/TeamNote mockup/build/index.html"
     }
   ]
 }
+
+
+
+
+
 
 
