@@ -13,10 +13,20 @@ router.get('/', authMiddleware, async (req, res) => {
     if (status) filter.status = status;
     if (difficulty) filter.difficulty = difficulty;
 
-    const tasks = await Task.find(filter)
-      .populate('createdBy', 'name role')
-      .sort({ createdAt: -1 });
+const tasks = await Task.find(filter).populate('createdBy', 'name role').sort({ createdAt: -1 });
     res.json(tasks);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// @route   GET /api/tasks/my
+// @desc    Get current user&#39;s tasks
+// @access  Private
+router.get('/my', authMiddleware, async (req, res) => {
+  try {
+const tasks = await Task.find({ createdBy: req.user.id }).populate('createdBy', 'name role').sort({ createdAt: -1 });
+res.json(tasks);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }

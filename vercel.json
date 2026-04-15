@@ -1,57 +1,10 @@
 {
-  "version": 2,
-  "buildCommand": "cd 'frontend/TeamNote mockup' && npm run build && cd ../.. && (rm -rf public || true) && cp -r 'frontend/TeamNote mockup/build' public",
-  "installCommand": "npm install && cd 'frontend/TeamNote mockup' && npm install",
-  "public": "public",
-  "functions": {
-    "api/auth.js": {
-      "runtime": "@vercel/node"
-    },
-    "api/tasks.js": {
-      "runtime": "@vercel/node"
-    },
-    "api/users.js": {
-      "runtime": "@vercel/node"
-    },
-    "api/health.js": {
-      "runtime": "@vercel/node"
-    }
-  },
+  "version": 3,
+  "builds": [
+    { "src": "server.js", "use": "@vercel/node" }
+  ],
   "routes": [
-    {
-      "src": "/api/auth/(.*)",
-      "dest": "/api/auth.js"
-    },
-    {
-      "src": "/api/auth",
-      "dest": "/api/auth.js"
-    },
-    {
-      "src": "/api/tasks/(.*)",
-      "dest": "/api/tasks.js"
-    },
-    {
-      "src": "/api/tasks",
-      "dest": "/api/tasks.js"
-    },
-    {
-      "src": "/api/users/(.*)",
-      "dest": "/api/users.js"
-    },
-    {
-      "src": "/api/users",
-      "dest": "/api/users.js"
-    },
-    {
-      "src": "/api/health",
-      "dest": "/api/health.js"
-    }
+    { "src": "/api/(.*)", "dest": "server.js" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
-
-
-
-
-
-
-

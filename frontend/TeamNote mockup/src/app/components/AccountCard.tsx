@@ -5,7 +5,7 @@ import type { Account } from './LoginScreen';
 interface Props {
   account: Account;
   onClick: (account: Account) => void;
-  onRequestDelete: (account: Account) => void;
+  onRequestDelete?: (account: Account) => void;
 }
 
 export function AccountCard({ account, onClick, onRequestDelete }: Props) {
@@ -25,7 +25,7 @@ export function AccountCard({ account, onClick, onRequestDelete }: Props) {
       <div className="flex items-center gap-2 ml-auto">
         <div className="text-amber-600 opacity-0 group-hover:opacity-100 transition-opacity">→</div>
         <button
-          onClick={(e) => { e.stopPropagation(); onRequestDelete(account); }}
+          onClick={(e) => { e.stopPropagation(); onRequestDelete?.(account); }}
           className="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-100 opacity-0 group-hover:opacity-100 transition-all rounded-full"
           title="Delete account"
         >

@@ -1,8 +1,9 @@
+// src/contexts/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import api from '../services/api';
+import { api, setAuthToken, getUsers } from '../services/api';
 
-interface User {
-  id: string;
+export interface User {
+  _id: string;
   name: string;
   email: string;
   role: 'leader' | 'member';
@@ -15,6 +16,7 @@ interface AuthContextType {
   register: (name: string, email: string, password: string, role: 'leader' | 'member') => Promise<void>;
   logout: () => void;
   loading: boolean;
+  getUsers: (role?: 'leader' | 'member') => Promise<User[]>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -34,6 +36,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (savedToken && savedUser) {
       setToken(savedToken);
       setUser(JSON.parse(savedUser));
+      setAuthToken(savedToken);
     }
     setLoading(false);
   }, []);
@@ -45,6 +48,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.setItem('user', JSON.stringify(newUser));
     setToken(newToken);
     setUser(newUser);
+    setAuthToken(newToken);
   };
 
   const register = async (name: string, email: string, password: string, role: 'leader' | 'member') => {
@@ -54,6 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.setItem('user', JSON.stringify(newUser));
     setToken(newToken);
     setUser(newUser);
+    setAuthToken(newToken);
   };
 
   const logout = () => {
@@ -61,10 +66,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('user');
     setToken(null);
     setUser(null);
+    setAuthToken();
+  };
+
+  // Expose getUsers via context
+  const fetchUsers = async (role: 'leader' | 'member' = 'member') => {
+    const res = await getUsers(role);
+    return res.data;
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ user, token, login, register, logout, loading, getUsers: fetchUsers }}>
       {children}
     </AuthContext.Provider>
   );
@@ -72,9 +84,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
   return context;
 };
-
