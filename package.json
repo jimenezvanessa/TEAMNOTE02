@@ -1,1 +1,18 @@
-{"name":"team-note","version":"1.0.0","description":"TeamNote monorepo app","scripts":{"dev":"concurrently \"npm run frontend:dev\" \"npm run backend:dev\"","vercel-build":"npm install && cd \"frontend/TeamNote mockup\" && npm install && npm run build && xcopy /E /I \"build\" ..\\..\\public\\ && copy index.html ..\\..\\public\\index.html","build":"cd \"frontend/TeamNote mockup\" && npm run build","frontend:dev":"cd \"frontend/TeamNote mockup\" && npm run dev","backend:dev":"cd backend && npm run dev","start":"node backend/server.js","vercel-dev":"npx vercel dev"},"devDependencies":{"concurrently":"^8.2.2","vercel":"latest"}}
+{
+  "name": "team-note",
+  "version": "1.0.0",
+  "description": "TeamNote monorepo app",
+  "scripts": {
+    "dev": "concurrently \"npm run frontend:dev\" \"npm run backend:dev\"",
+    "vercel-build": "npm install && cd \"frontend/TeamNote mockup\" && npm install && npm run build && (mkdir -p ../../public || true) && cp -r build/* ../../public/ && cp index.html ../../public/index.html",
+    "build": "cd \"frontend/TeamNote mockup\" && npm run build",
+    "frontend:dev": "cd \"frontend/TeamNote mockup\" && npm run dev",
+    "backend:dev": "cd backend && npm run dev",
+    "start": "node backend/server.js",
+    "vercel-dev": "npx vercel dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "vercel": "latest"
+  }
+}
