@@ -1,42 +1,64 @@
-# TeamNote Deployment Instructions (Backend: Render, Frontend: Vercel)
+# TeamNote Deployment Instructions (Vercel Backend Fix + Full Setup)
 
-## Repo Status
-- **Root Repo**: https://github.com/jimenezvanessa/TeamNote01 (pushed latest changes: deployment files, backend/frontend updates).
-- **Backend**: `backend/` directory ready (clean working tree, 1 commit).
-- **Frontend**: `frontend/TeamNote mockup/` ready (ahead by commits, latest pushed).
-
-**Note**: Single repo structure. Use subfolders for deployment or extract to separate repos if needed.
-
-## Backend to Render
-1. Dashboard → New → Web Service → Connect https://github.com/jimenezvanessa/TeamNote01 (branch: master).
-2. Settings:
-   - Root Directory: `backend`
-   - Build: `npm install`
-   - Start: `npm start`
-3. Env Vars:
+## 🚀 Quick Fix: Backend API (Root Project)
+1. `vercel.json` updated to `version: 2` ✅
+2. Install Vercel CLI: `npm i -g vercel`
+3. Deploy: `vercel --prod`
+4. Set env vars in Vercel dashboard:
    ```
-   MONGODB_URI=your_atlas_uri
-   FRONTEND_URL=your_vercel_url
-   JWT_SECRET=supersecret32chars+
+   MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/db
+   JWT_SECRET=your-32-char-secret-key-here
+   FRONTEND_URL=https://your-frontend.vercel.app
    ```
-4. Deploy → Get URL e.g. `https://teamnote-backend-abc.onrender.com`
+5. Test: `https://your-project.vercel.app/api/health` → `{"status":"OK"}`
 
-## Frontend to Vercel
-1. Dashboard → New Project → Connect https://github.com/jimenezvanessa/TeamNote01.
-2. Settings:
-   - Root Directory: `frontend/TeamNote mockup`
-   - Build: `npm run build`
-   - Output: `dist`
-3. Env Var:
-   ```
-   VITE_API_URL=https://your-render-url/api
-   ```
-4. Deploy → Get URL.
+## 🏗️ Full Production Setup (Separate Backend + Frontend)
+### Backend API (Vercel Serverless - Root)
+- Uses `backend/server.js` (Express → serverless via routes).
+- **Limitation**: Socket.io won't work (serverless cold starts). Use Pusher/Supabase Realtime for prod.
 
-## Next Steps
-1. Create MongoDB Atlas cluster, get MONGODB_URI.
-2. Deploy backend first, copy URL.
-3. Deploy frontend, set VITE_API_URL, update backend FRONTEND_URL.
-4. Test: Register, tasks, real-time Socket.io.
+**Deploy Command:**
+```
+vercel --prod
+```
+Project Settings: Link to root dir.
 
-Repos updated and ready for deployment import. You do the Render/Vercel steps.
+### Frontend (Vercel Static - Vite Build)
+```
+cd "frontend/TeamNote mockup"
+vercel --prod
+```
+- Framework Preset: Vite
+- Build: `npm run build`
+- Output Dir: `dist`
+- Env: `VITE_API_URL=https://your-backend.vercel.app/api`
+
+## 🧪 Local Development
+```
+# Backend (port 5000)
+cd backend
+npm start
+
+# Frontend (port 5173, proxies /api → backend)
+cd "frontend/TeamNote mockup"
+npm run dev
+```
+
+## 📋 Prerequisites
+1. **MongoDB Atlas**:
+   - Create free M0 cluster.
+   - Network Access: Allow all IPs (0.0.0.0/0).
+   - DB User: Read/Write.
+2. **Vercel Account**: Free tier sufficient.
+
+## ✅ Deployment Order
+1. Deploy backend → copy API base URL (e.g., `https://teamnote-api-xxxx.vercel.app`).
+2. Deploy frontend → set `VITE_API_URL={backend-url}/api`.
+3. Test full flow: Login → Tasks CRUD.
+
+## ⚠️ Notes
+- Root deploy serves basic `public/index.html` for non-API routes.
+- For monorepo: Use Vercel Git integration with root dirs.
+- Sockets: Disabled in serverless → update `backend/server.js` or migrate.
+
+Redeploy now – error fixed!
