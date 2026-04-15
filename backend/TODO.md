@@ -1,28 +1,33 @@
 # Backend Implementation TODO for TeamNote
 
-# Backend Implementation TODO for TeamNote - COMPLETE ✅
+## Status
 
-## Plan Breakdown (Approved)
-1. ~~Create backend folder structure, package.json, .env.example, .gitignore~~
-2. ~~Create models (User.js, Task.js)~~
-3. ~~Create utils/db.js for MongoDB connection~~
-4. ~~Create middleware/auth.js for JWT and role checks~~
-5. ~~Create routes/auth.js and routes/tasks.js~~
-6. ~~Create sockets/taskSocket.js for real-time~~
-7. ~~Create server.js to tie everything together~~
+Backend implementation is complete and integrated into monorepo runtime.
 
-## Setup & Run
-1. Install: `cd backend && npm install`
-2. .env: Copy `.env.example` → `.env`, set `MONGODB_URI` (get from MongoDB Atlas or local), `JWT_SECRET=supersecretkey`
-3. Dev: `cd backend && npm run dev`
-4. Test APIs (Postman):
-   - POST http://localhost:5000/api/auth/register {name:'Leader',email:'leader@test.com',password:'pass123',role:'leader'}
-   - POST /api/auth/login → get token
-   - POST /api/tasks {title:'Test',description:'Desc',difficulty:'Easy'} (Auth Bearer token, Leader)
-   - GET /api/tasks?status=To Do&difficulty=Easy
-   - PUT /api/tasks/{id} {status:'In Progress'}
-   - Socket: Connect io('http://localhost:5000'), emit/listen task:updated etc.
-5. Frontend: Ready - APIs on /api/auth, /api/tasks; Socket http://localhost:5000
+## Current Runtime Notes
 
-Backend complete and connection-ready for frontend!
+1. Backend is started from root workspace scripts.
+2. Local env source is root `.env`.
+3. API routes are served from `backend/routes/*`.
+4. Vercel API uses `backend/server.js` runtime.
+
+## Commands
+
+- Install once (root): `npm install`
+- Backend dev only: `npm run backend:dev`
+- Backend start only: `npm run start`
+- Full app dev (frontend + backend): `npm run dev`
+
+## API Smoke Tests
+
+- `GET http://localhost:5000/api/health`
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `GET /api/tasks`
+- `POST /api/tasks`
+- `PUT /api/tasks/:id`
+
+## Realtime Note
+
+Socket.IO remains available for local backend runtime usage.
 

@@ -1,16 +1,23 @@
 # Monorepo Unified Deploy TODO
 
-## Steps to Complete
-- [x] Step 1: Read current package.json, vercel.json, vite.config.ts for edit planning.
-- [ ] Step 2: Update root package.json build script to build frontend + copy to public/.
-- [ ] Step 3: Update vercel.json with build command.
-- [ ] Step 4: Replace root public/index.html with frontend's production-ready version.
-- [ ] Step 5: Verify/update vite.config.ts for prod (base='', assets).
-- [x] Step 6: Ensure api/*.js serverless functions complete (inline backend routes if needed). ✅ Already implemented (auth/tasks/users/health/connect.js use backend models).
-- [ ] Step 7: Test `npm run build` - check public/ has full frontend.
-- [ ] Step 8: Local test `npx vercel dev`.
-- [ ] Step 9: Manual `vercel deploy --prod`.
-- [ ] Done: attempt_completion.
+## Completed
+- [x] Migrate to npm workspaces (`backend`, `frontend/teamnote-app`)
+- [x] Unify local env to root `.env` / `.env.example`
+- [x] Route Vercel API to `backend/server.js`
+- [x] Remove duplicate runtime paths (`api/`, `backend/api/`, `lib/models/`, `backend/public/`)
+- [x] Rename frontend folder from `TeamNote mockup` to `teamnote-app`
+- [x] Verify build pipeline (`npm run vercel-build`)
+- [x] Verify backend health endpoint (`/api/health`)
 
-Progress: ✅ Step 1 & 6 complete. Proceeding to Step 2.
+## Next Actions
+- [ ] Run end-to-end functional smoke tests (register, login, task CRUD)
+- [ ] Configure production env vars in Vercel dashboard
+- [ ] Deploy with `vercel --prod`
+- [ ] Capture production validation evidence in `DEPLOYMENT_AUDIT.md`
+
+## Quick Commands
+- Install: `npm install`
+- Dev: `npm run dev`
+- Build for Vercel: `npm run vercel-build`
+- Start backend only: `npm run start`
 

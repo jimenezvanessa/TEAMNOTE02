@@ -5,3 +5,5 @@
 - [x] 2. Update LoginScreen to load/picker from localStorage
 - [x] 3. Minor App.tsx tweaks if needed
 - [x] 4. Test persistence (signup, logout, relogin)
+
+Monorepo note: run from root with `npm run frontend:dev` or `npm run dev`.
