@@ -1,11 +1,15 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 
 const connectDB = async () => {
   if (!process.env.MONGODB_URI) {
-    console.warn(
-      'MONGODB_URI not set - running without database (in-memory operations limited)'
-    );
+    const message =
+      'MONGODB_URI not set. Define it in root .env (local) or Vercel environment variables (production).';
+    if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+      throw new Error(message);
+    }
+    console.warn(message);
     return null;
   }
 

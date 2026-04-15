@@ -12,12 +12,11 @@
     "checkJs": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "types": ["node"],
     "noImplicitAny": false,
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./dist"
   },
-  "include": ["src/**/*.ts", "**/*.ts"],
+  "include": ["backend/**/*.js"],
   "exclude": ["node_modules", "**/*.test.ts"]
 }
 
