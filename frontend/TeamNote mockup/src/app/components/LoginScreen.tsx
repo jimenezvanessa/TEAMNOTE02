@@ -18,18 +18,28 @@ export function LoginScreen({ onSwitch }: LoginScreenProps) {
 
   const { getUsers } = useAuth();
 
-  // Fetch users (leaders and members)
+  // ✅ FIXED: safe refresh (prevents undefined crash)
   const refreshAccounts = async () => {
     try {
-      const [leaders, members] = await Promise.all([
-        getUsers('leader'),
+      const [admins, members] = await Promise.all([
+        getUsers('admin'),
         getUsers('member')
       ]);
 
-      const leadersWithAvatar = leaders.map((u) => ({ ...u, avatar: u.name.charAt(0).toUpperCase() }));
-      const membersWithAvatar = members.map((u) => ({ ...u, avatar: u.name.charAt(0).toUpperCase() }));
+      // 🔥 SAFETY: ensure arrays always exist
+      const safeAdmins = Array.isArray(admins) ? admins : [];
+      const safeMembers = Array.isArray(members) ? members : [];
 
-      setAccounts([...leadersWithAvatar, ...membersWithAvatar]);
+      const addAvatar = (users: User[]) =>
+        users.map((u) => ({
+          ...u,
+          avatar: u.name?.charAt(0)?.toUpperCase() || '?',
+        }));
+
+      setAccounts([
+        ...addAvatar(safeAdmins),
+        ...addAvatar(safeMembers)
+      ]);
     } catch (err) {
       console.error('Failed to fetch accounts:', err);
       setAccounts([]);
@@ -40,7 +50,7 @@ export function LoginScreen({ onSwitch }: LoginScreenProps) {
     refreshAccounts();
   }, []);
 
-  const leaders = accounts.filter(a => a.role === 'leader');
+  const admin = accounts.filter(a => a.role === 'admin');
   const members = accounts.filter(a => a.role === 'member');
 
   const handleAccountClick = (account: Account) => {
@@ -51,7 +61,7 @@ export function LoginScreen({ onSwitch }: LoginScreenProps) {
   const handleLoginSuccess = () => {
     setShowLoginModal(false);
     setSelectedAccount(null);
-    refreshAccounts(); // Refresh after login
+    refreshAccounts();
   };
 
   return (
@@ -97,8 +107,12 @@ export function LoginScreen({ onSwitch }: LoginScreenProps) {
               </h2>
             </div>
             <div className="space-y-3">
-              {leaders.map(account => (
-                <AccountCard key={account._id} account={account} onClick={handleAccountClick} />
+              {admin.map(account => (
+                <AccountCard
+                  key={account._id}
+                  account={account}
+                  onClick={handleAccountClick}
+                />
               ))}
             </div>
           </div>
@@ -113,17 +127,25 @@ export function LoginScreen({ onSwitch }: LoginScreenProps) {
             </div>
             <div className="space-y-3">
               {members.map(account => (
-                <AccountCard key={account._id} account={account} onClick={handleAccountClick} />
+                <AccountCard
+                  key={account._id}
+                  account={account}
+                  onClick={handleAccountClick}
+                />
               ))}
             </div>
           </div>
+
         </div>
 
         {/* Login Modal */}
         <LoginModal
           isOpen={showLoginModal}
           account={selectedAccount}
-          onCancel={() => { setShowLoginModal(false); setSelectedAccount(null); }}
+          onCancel={() => {
+            setShowLoginModal(false);
+            setSelectedAccount(null);
+          }}
           onSuccess={handleLoginSuccess}
         />
       </div>
