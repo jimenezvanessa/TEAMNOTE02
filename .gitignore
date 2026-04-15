@@ -45,3 +45,4 @@ vite.cache
 node_modules/.vite
 .vercel
 .env*.local
+.env
