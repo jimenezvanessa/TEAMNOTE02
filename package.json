@@ -2,9 +2,10 @@
   "name": "team-note",
   "version": "1.0.0",
   "description": "TeamNote monorepo app",
+  "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run frontend:dev\" \"npm run backend:dev\"",
-    "vercel-build": "npm install && cd \"frontend/TeamNote mockup\" && del /q package-lock.json 2>nul & rmdir /s /q node_modules 2>nul & npm install && npm run build && if not exist ..\\..\\public mkdir ..\\..\\public && xcopy /E /I /Y build ..\\..\\public\\ && copy /Y index.html ..\\..\\public\\index.html",
+    "vercel-build": "cd \"frontend/TeamNote mockup\" && npm install && npm run build && node ../../copy-build.js",
     "build": "cd \"frontend/TeamNote mockup\" && npm run build",
     "frontend:dev": "cd \"frontend/TeamNote mockup\" && npm run dev",
     "backend:dev": "cd backend && npm run dev",
@@ -13,6 +14,7 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
+    "fs-extra": "^11.2.0",
     "vercel": "latest"
   }
 }
