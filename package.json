@@ -11,6 +11,7 @@
     "dev": "concurrently \"npm run frontend:dev\" \"npm run backend:dev\"",
     "vercel-build": "npm run build --workspace frontend/teamnote-app && node copy-build.js",
     "build": "npm run build --workspace frontend/teamnote-app",
+    "test": "npm run test --workspace backend",
     "frontend:dev": "npm run dev --workspace frontend/teamnote-app",
     "backend:dev": "npm run dev --workspace backend",
     "start": "npm run start --workspace backend",
